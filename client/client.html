@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-  
-  <script>
 
-  </script>
+ 
 </head>
+
 <body>
   <section id="top">
     <h3>Status Code Tests</h3>
@@ -28,5 +28,58 @@
   </section>
   <section id="content">
   </section>
+
+   <script>
+    const sendButton = document.querySelector('#send');
+    const pageSelect = document.querySelector('#page');
+    const typeSelect = document.querySelector('#type');
+    const contentSection = document.querySelector('#content')
+
+    const handleResponse = async (response) => {
+      const contentType = response.headers.get('content-type');
+
+      if (contentType.includes('xml')) {
+        const text = await response.text();
+        console.log(text); // raw XML
+
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, 'application/xml');
+
+        const message = xml.querySelector('message').textContent;
+        const idNode = xml.querySelector('id');
+
+        contentSection.innerHTML = `<p>${message}</p>`;
+        if (idNode) {
+          contentSection.innerHTML += `<p>ID: ${idNode.textContent}</p>`;
+        }
+      } else {
+        const text = await response.text();
+        console.log(text); // raw JSON
+
+        const obj = JSON.parse(text);
+
+        contentSection.innerHTML = `<p>${obj.message}</p>`;
+        if (obj.id) {
+          contentSection.innerHTML += `<p>ID: ${obj.id}</p>`;
+        }
+      }
+    }
+
+    const sendFetch = () => {
+      const page = pageSelect.value;
+      const type = typeSelect.value;
+
+      fetch(page, {
+        headers: {
+          'Accept': type,
+        },
+      })
+        .then(handleResponse)
+        .catch((err) => console.error(err));
+    };
+
+    sendButton.addEventListener('click', sendFetch);
+  </script>
 </body>
+
 </html>

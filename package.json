@@ -1,0 +1,27 @@
+{
+  "name": "http-api-assignment",
+  "version": "1.0.0",
+  "description": "http api assignment",
+  "homepage": "https://github.com/Sebas11an245/http-api-assignment#readme",
+  "bugs": {
+    "url": "https://github.com/Sebas11an245/http-api-assignment/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sebas11an245/http-api-assignment.git"
+  },
+  "license": "ISC",
+  "author": "Sebastian Arroyo",
+  "type": "commonjs",
+  "main": "eslint.config.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Test Complete\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0"
+  }
+}
